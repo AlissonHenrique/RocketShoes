@@ -57,7 +57,6 @@ class Home extends Component {
   }
 }
 export default connect()(Home);
-
 Home.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
