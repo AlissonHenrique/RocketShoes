@@ -12,13 +12,12 @@ import { formatPrice } from '../../util/format';
 import * as CartActions from '../../store/modules/cart/actions';
 import { Container, ProducTable, Total } from './styles';
 
-function Cart({ cart, total, removeFromToCart, updateAmount }) {
+function Cart({ cart, total, removeFromToCart, updateAmountRequest }) {
   function increment(product) {
-    updateAmount(product.id, product.amount + 1);
+    updateAmountRequest(product.id, product.amount + 1);
   }
-
   function decrement(product) {
-    updateAmount(product.id, product.amount - 1);
+    updateAmountRequest(product.id, product.amount - 1);
   }
   return (
     <Container>
@@ -40,7 +39,7 @@ function Cart({ cart, total, removeFromToCart, updateAmount }) {
               </td>
               <td>
                 <strong>{product.title}</strong>
-                <span>{product.PriceFormatted}</span>
+                <span>{product.priceFormatted}</span>
               </td>
               <td>
                 <div>
