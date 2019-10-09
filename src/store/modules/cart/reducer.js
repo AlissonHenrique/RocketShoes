@@ -1,13 +1,13 @@
-import producer from 'immer';
+import producer, { produce } from 'immer';
 
 export default function cart(state = [], action) {
   // /sitch apenas para ouviar action de cart
   switch (action.type) {
-    case 'ADD_TO_CART':
+    case '@cart/ADD':
       return producer(state, draft => {
-        const producIndex = draft.findIndex(p => p.id === action.product.id);
-        if (producIndex >= 0) {
-          draft[producIndex].amount += 1;
+        const productIndex = draft.findIndex(p => p.id === action.product.id);
+        if (productIndex >= 0) {
+          draft[productIndex].amount += 1;
         } else {
           draft.push({
             ...action.product,
@@ -15,13 +15,24 @@ export default function cart(state = [], action) {
           });
         }
       });
-    case 'REMOVE_FROM_CART':
+    case '@cart/REMOVE':
       return producer(state, draft => {
-        const producIndex = draft.findIndex(p => p.id === action.id);
-        if (producIndex >= 0) {
-          draft.splice(producIndex, 1);
+        const productIndex = draft.findIndex(p => p.id === action.id);
+        if (productIndex >= 0) {
+          draft.splice(productIndex, 1);
         }
       });
+    case '@cart/UPDATE_AMOUNT': {
+      if (action.amount <= 0) {
+        return state;
+      }
+      return produce(state, draft => {
+        const productIndex = draft.findIndex(p => p.id === action.id);
+        if (productIndex >= 0) {
+          draft[productIndex].amount = Number(action.amount);
+        }
+      });
+    }
     default:
       return state;
   }
